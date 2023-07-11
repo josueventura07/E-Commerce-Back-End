@@ -35,7 +35,6 @@ const Products = db.define('products' , {
     },
     comment: {
         type: DataTypes.STRING,
-        allowNullL: false,
         validate: {
             len: [2, 150]
         }
