@@ -9,7 +9,7 @@ const ImgsCatalog = db.define('imgsCatalog' , {
         primaryKey: true
     },
     productId: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNullL: false,
         references: {
             key: 'id',

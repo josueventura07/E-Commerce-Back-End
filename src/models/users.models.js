@@ -38,8 +38,8 @@ const Users = db.define('users' , {
         unique: true
     },
     status: {
-        type: DataTypes.STRING,
-        defaultValue: 'active'
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 })
 

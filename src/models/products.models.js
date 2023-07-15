@@ -7,7 +7,7 @@ const Categories = require('./categories.models')
 
 const Products = db.define('products' , {
     id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true
     },
     description: {
@@ -17,7 +17,7 @@ const Products = db.define('products' , {
             len: [2, 100]
         }
     },
-    umId: {
+    unitOfMeasureId: {
         type: DataTypes.INTEGER,
         allowNullL: false,
         references: {
@@ -39,7 +39,10 @@ const Products = db.define('products' , {
             len: [2, 150]
         }
     },
-    
+    status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    }
 })
 
 module.exports = Products

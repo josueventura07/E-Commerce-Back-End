@@ -1,6 +1,6 @@
 const userControllers = require('./users.controllers')
-const mailer = require('../utils/mailer')
-const config = require('../../config')
+//const mailer = require('../utils/mailer')
+//const config = require('../../config')
 
 
 const getAllUsers = (req, res) => {
