@@ -42,7 +42,7 @@ const getMyUser = (req, res) => {
 
 const postUser = (req, res) => {
     const {firstName, lastName, email, password, userName} = req.body
-    userControllers.createUser({firstName, lastName, email, password,userName,})
+    userControllers.createUser({firstName, lastName, email, password,userName})
         .then((data) => {
             res.status(201).json(data)
         })
