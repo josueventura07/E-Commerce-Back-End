@@ -43,7 +43,7 @@ const getMyUser = (req, res) => {
 const postUser = (req, res) => {
     const {firstName, lastName, email, password, userName} = req.body
     userControllers.createUser({firstName, lastName, email, password,userName})
-        .then((data) => {
+        .then(async (data) => {
             res.status(201).json(data)
         })
         .catch((err) => {
@@ -55,6 +55,7 @@ const postUser = (req, res) => {
                 userName: 'String'
             }})
         })
+        
 }
 
 //? Solo admins pueden ejecutarlo

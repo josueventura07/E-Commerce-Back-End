@@ -7,9 +7,6 @@ const findAllUsers = async () => {
     const data = await Users.findAll({
         attributes: {
             exclude: ['password', 'createdAt', 'updatedAt']
-        },
-        where: {
-            status: 'active'
         }
     })
     return data
@@ -58,23 +55,11 @@ const updateUser = async (id, obj) => {
     return data[0]
 }
 
-const deleteUser = async (id) => {
-    const data = await Users.update({
-        status: 'inactive'
-    }, {
-        where: {
-            id: id
-        }
-    })
-    return data[0]
-}
-
 
 module.exports = {
     findAllUsers,
     findUserById,
     findUserByEmail,
     createUser,
-    updateUser,
-    deleteUser
+    updateUser
 }

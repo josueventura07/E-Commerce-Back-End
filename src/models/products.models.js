@@ -8,7 +8,15 @@ const Categories = require('./categories.models')
 const Products = db.define('products' , {
     id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
+    },
+    productName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [2, 50]
+        }
     },
     description: {
         type: DataTypes.STRING,

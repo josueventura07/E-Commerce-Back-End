@@ -3,7 +3,7 @@ const {DataTypes} = require('sequelize')
 const db = require('../utils/database')
 const Users = require('./users.models')
 const Roles = require('./roles.models')
-const BussinesInfo = require('./bussines_info.models')
+const BussinesInfos = require('./bussines_info.models')
 
 
 const Profiles = db.define('profiles' , {
@@ -11,12 +11,12 @@ const Profiles = db.define('profiles' , {
         type: DataTypes.UUID,
         primaryKey: true
     },
-    bussineInfoId: {
+    bussinesInfoId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
             key: 'id',
-            model: BussinesInfo
+            model: BussinesInfos
         }
     },
     userId: {

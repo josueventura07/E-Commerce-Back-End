@@ -11,7 +11,7 @@ const Carts = require('./carts.models')
 const Detail_invoices = require('./detail_invoices.models')
 const Detail_receptions = require('./detail_receptions.models')
 const Detail_carts = require('./detail_carts.models')
-const BussinesInfo = require('./bussines_info.models')
+const BussinesInfos = require('./bussines_info.models')
 
 const initModels = () => {
     
@@ -21,8 +21,8 @@ const initModels = () => {
     Profiles.belongsTo(Roles)
     Roles.hasMany(Profiles)
 
-    Profiles.belongsTo(BussinesInfo)
-    BussinesInfo.hasMany(Profiles)
+    Profiles.belongsTo(BussinesInfos)
+    BussinesInfos.hasMany(Profiles)
     
     Products.belongsTo(Categories)
     Categories.hasMany(Products)

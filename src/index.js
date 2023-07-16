@@ -5,7 +5,13 @@ const config = require('../config');
 const db = require('./utils/database');
 const initModels = require('./models/initModels');
 const userRouter = require('./users/users.router');
+const profileRouter = require('./profiles/profiles.router')
+const bussineRouter = require('./bussinesInfo/bussinesInfo.router');
+const roleRouter = require('./roles/roles.router');
 const authRouter = require('./auth/auth.router');
+const unitOfMeasuresRouter = require('./unitOfMeasure/unitOfMeasures.router')
+const categoriesRouter = require('./categories/categories.router')
+const productsRouter = require('./products/products.router')
 
 const app = express();
 
@@ -31,8 +37,14 @@ app.get('/', (req, res)=> {
     })
 });
 
+app.use('/api/v1/bussines', bussineRouter);
+app.use('/api/v1/roles', roleRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/profiles', profileRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/unitOfMeasures', unitOfMeasuresRouter);
+app.use('/api/v1/categories', categoriesRouter);
+app.use('/api/v1/products', productsRouter);
 
 
 app.listen(config.api.port, () => {

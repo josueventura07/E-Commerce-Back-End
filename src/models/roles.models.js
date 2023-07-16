@@ -10,6 +10,7 @@ const Roles = db.define('roles' , {
     name: {
         type: DataTypes.STRING,
         allowNullL: false,
+        unique: true,
         validate: {
             len: [2, 50]
         }
