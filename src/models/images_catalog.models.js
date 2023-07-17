@@ -6,6 +6,7 @@ const Products = require('./products.models')
 const ImgsCatalog = db.define('imgsCatalog' , {
     id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
     },
     productId: {

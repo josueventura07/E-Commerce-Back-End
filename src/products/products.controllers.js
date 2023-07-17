@@ -33,6 +33,16 @@ const findProductById = async (id) => {
     return data
 }
 
+const findProductByName = async (name) => {
+    const data = await Products.findOne({
+        where: {
+            name: name
+        }
+    })
+
+    return data.id
+}
+
 const createProduct = async (obj) => {
     const data = Products.create({
         productName: obj.productName,
@@ -70,6 +80,7 @@ const deleteProduct = async (id) => {
 module.exports = {
     findAllProducts,
     findProductById,
+    findProductByName,
     createProduct,
     updateProduct,
     deleteProduct

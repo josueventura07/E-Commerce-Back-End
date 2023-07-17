@@ -12,6 +12,7 @@ const authRouter = require('./auth/auth.router');
 const unitOfMeasuresRouter = require('./unitOfMeasure/unitOfMeasures.router')
 const categoriesRouter = require('./categories/categories.router')
 const productsRouter = require('./products/products.router')
+const imgsCatalogRouter = require('./imagesCatalog/imgsCatalog.router')
 
 const app = express();
 
@@ -45,7 +46,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/unitOfMeasures', unitOfMeasuresRouter);
 app.use('/api/v1/categories', categoriesRouter);
 app.use('/api/v1/products', productsRouter);
-
+app.use('/api/v1/imgsCatalog', imgsCatalogRouter);
 
 app.listen(config.api.port, () => {
     console.log(`Server started at port: ${config.api.host}`)
