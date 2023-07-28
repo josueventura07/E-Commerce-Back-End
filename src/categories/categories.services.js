@@ -4,7 +4,7 @@ const categoriesControllers = require('./categories.controllers')
 const getAllCategories = (req, res) => {
     categoriesControllers.findAllCategories()
     .then((data) => {
-        res.status(200).json(data)
+        res.status(200).json({status: 'success', categories: data})
     })
     .catch((err) => {
         res.status(400).json({message: err.message})

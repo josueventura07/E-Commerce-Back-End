@@ -1,6 +1,8 @@
 const router = require('express').Router()
 
 const userServices = require('./users.services')
+const bussinesServices = require('../bussines/bussines.services')
+const bussinesAdministratorsServices = require('../bussinesAdministrators/bussinesAdministrators.services')
 
 const passportJWT = require('../middlewares/auth.middleware')
 const roleMiddleware= require('../middlewares/role.middleware')
@@ -8,6 +10,11 @@ const roleMiddleware= require('../middlewares/role.middleware')
 router.route('/')
     .get(userServices.getAllUsers)
     .post(userServices.postUser)
+
+router.route('/bussines')
+    .get(passportJWT.authenticate('jwt', {session: false}), bussinesAdministratorsServices.getAllMyBussines)
+    .post(passportJWT.authenticate('jwt', {session: false}), bussinesServices.postBussine) 
+    
 
 router.route('/me')
     .get(passportJWT.authenticate('jwt', {session: false}), userServices.getMyUser)

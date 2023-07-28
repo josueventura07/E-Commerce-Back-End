@@ -41,6 +41,10 @@ const Products = db.define('products' , {
             model: Categories
         }
     },
+    price: {
+        type: DataTypes.FLOAT,
+        defaultValue: 0
+    },
     comment: {
         type: DataTypes.STRING,
         validate: {

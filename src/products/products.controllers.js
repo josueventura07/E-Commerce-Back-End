@@ -2,6 +2,7 @@
 const Products = require('../models/products.models')
 const UnitOfMeasures = require('../models/unit_of_measures.models')
 const Categories = require('../models/categories.models')
+const productImgs = require('../models/images_catalog.models')
 
 const findAllProducts = async () => {
     const data = await Products.findAll({
@@ -9,14 +10,17 @@ const findAllProducts = async () => {
             status: true
         },
         attributes: {
-            exclude: ['unitOfMeasureId', 'categoryId']
+            exclude: ['unitOfMeasureId', 'categoryId', 'createdAt', 'updatedAt']
         },
         include: [{
             model: UnitOfMeasures,
-            attributes: ['name']
+            attributes: ['id','name']
         }, {
             model: Categories,
-            attributes: ['name']
+            attributes: ['id', 'name']
+        }, {
+            model: productImgs,
+            attributes: ['imgUrl']
         }]
     })
 
@@ -27,16 +31,52 @@ const findProductById = async (id) => {
     const data = await Products.findOne({
         where: {
             id: id
-        }
+        },
+        attributes: {
+            exclude: ['categoryId', 'unitOfMeasureId', 'createdAt', 'updatedAt']
+        },
+        include: [{
+            model: UnitOfMeasures,
+            attributes: ['name']
+        }, {
+            model: Categories,
+            attributes: ['name']
+        }, {
+            model: productImgs,
+            attributes: ['imgUrl']
+        }]
     })
 
     return data
 }
 
-const findProductByName = async (name) => {
+const findAllProductsByCategory = async (category) => {
+    const data = await Products.findAll({
+        where: {
+            categoryId: category
+        },
+        attributes: {
+            exclude: ['categoryId', 'unitOfMeasureId', 'createdAt', 'updatedAt']
+        },
+        include: [{
+            model: UnitOfMeasures,
+            attributes: ['id','name']
+        }, {
+            model: Categories,
+            attributes: ['id', 'name']
+        }, {
+            model: productImgs,
+            attributes: ['imgUrl']
+        }]
+    })
+
+    return data
+}
+
+const findProductByName = async (productName) => {
     const data = await Products.findOne({
         where: {
-            name: name
+            productName: productName
         }
     })
 
@@ -44,11 +84,12 @@ const findProductByName = async (name) => {
 }
 
 const createProduct = async (obj) => {
-    const data = Products.create({
+    const data = await Products.create({
         productName: obj.productName,
         description: obj.description,
         unitOfMeasureId: obj.unitOfMeasureId,
         categoryId: obj.categoryId,
+        price: obj.price,
         comment: obj.comment
     })
 
@@ -80,6 +121,7 @@ const deleteProduct = async (id) => {
 module.exports = {
     findAllProducts,
     findProductById,
+    findAllProductsByCategory,
     findProductByName,
     createProduct,
     updateProduct,

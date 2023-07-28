@@ -2,9 +2,9 @@ const {DataTypes} = require('sequelize')
 
 const db = require('../utils/database')
 const Profiles = require('./profiles.models')
+const Products = require('./products.models')
 
-
-const Invoices = db.define('invoices' , {
+const Receivings = db.define('receivings', {
     id: {
         type: DataTypes.UUID,
         primaryKey: true
@@ -17,21 +17,18 @@ const Invoices = db.define('invoices' , {
             model: Profiles
         }
     },
-    amount: {
-        type: DataTypes.DOUBLE,
-        allowNull: false
-    },
-    comment: {
-        type: DataTypes.STRING,
-        validate: {
-            len: [2, 150]
+    productId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            key: 'id',
+            model: Products
         }
     },
-    status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
+    quantity: {
+        type: DataTypes.FLOAT,
+        allowNull: false
     }
-    
 })
 
-module.exports = Invoices
+module.exports = Receivings

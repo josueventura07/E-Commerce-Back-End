@@ -2,12 +2,13 @@ const {DataTypes} = require('sequelize')
 
 const db = require('../utils/database')
 
-const BussinesInfos = db.define('bussinesInfos' , {
+
+const Bussines = db.define('bussines' , {
     id: {
         type: DataTypes.UUID,
         primaryKey: true
     },
-    name: {
+    bussineName: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
@@ -20,10 +21,18 @@ const BussinesInfos = db.define('bussinesInfos' , {
         type: DataTypes.TEXT,
         allowNull: false
     },
+    city: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    country: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
 })
 
-module.exports = BussinesInfos
+module.exports = Bussines

@@ -4,22 +4,14 @@ const db = require('../utils/database')
 const Profiles = require('./profiles.models')
 
 
-const Receptions = db.define('receptions' , {
+const Orders = db.define('orders' , {
     id: {
         type: DataTypes.UUID,
         primaryKey: true
     },
-    supplierName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    invoiceNumber: {
-        type: DataTypes.STRING,
-        allowNullL: false
-    },
     profileId: {
         type: DataTypes.UUID,
-        allowNullL: false,
+        allowNull: false,
         references: {
             key: 'id',
             model: Profiles
@@ -33,12 +25,13 @@ const Receptions = db.define('receptions' , {
     },
     amount: {
         type: DataTypes.DOUBLE,
-        allowNullL: false 
+        allowNull: false
     },
     status: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
+    
 })
 
-module.exports = Receptions
+module.exports = Orders

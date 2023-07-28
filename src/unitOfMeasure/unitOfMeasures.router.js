@@ -1,3 +1,4 @@
+/*
 const router = require('express').Router()
 
 const unitOfMeasuresServices = require('./unitOfMeasures.services')
@@ -10,3 +11,4 @@ router.route('/:id')
 .get(unitOfMeasuresServices.getUnitOfMeasureById)
 
 module.exports = router
+*/

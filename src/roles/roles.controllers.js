@@ -19,7 +19,7 @@ const findRoleById = async (id) => {
 }
 
 const findRoleByName = async (name) => {
-    const data = Roles.findOne({
+    const data = await Roles.findOne({
         where: {
             name: name
         }

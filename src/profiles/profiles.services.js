@@ -1,6 +1,6 @@
 const profilesControllers = require('./profiles.controllers')
 const usersControllers = require('../users/users.controllers')
-const bussinesInfoControllers = require('../bussinesInfo/bussinesInfo.controllers')
+const bussinesInfoControllers = require('../bussines/bussines.controllers')
 
 const getAllProfiles = (req, res) => {
     profilesControllers.findAllProfiles()

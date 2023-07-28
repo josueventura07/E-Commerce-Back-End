@@ -5,14 +5,18 @@ const config = require('../config');
 const db = require('./utils/database');
 const initModels = require('./models/initModels');
 const userRouter = require('./users/users.router');
-const profileRouter = require('./profiles/profiles.router')
-const bussineRouter = require('./bussinesInfo/bussinesInfo.router');
 const roleRouter = require('./roles/roles.router');
-const authRouter = require('./auth/auth.router');
-const unitOfMeasuresRouter = require('./unitOfMeasure/unitOfMeasures.router')
-const categoriesRouter = require('./categories/categories.router')
+const profileRouter = require('./profiles/profiles.router')
+const loginRouter = require('./auth/auth.router')
+const bussineRouter = require('./bussines/bussines.router');
 const productsRouter = require('./products/products.router')
+//const unitOfMeasuresRouter = require('./unitOfMeasure/unitOfMeasures.router')
+//const categoriesRouter = require('./categories/categories.router')
 const imgsCatalogRouter = require('./imagesCatalog/imgsCatalog.router')
+const receivingsRouter = require('./receivings/receivings.router')
+const receptionsRouter = require('./receptions/receptions.router')
+const cartsRouter = require('./carts/carts.router')
+const ordersRouter = require('./orders/orders.router')
 
 const app = express();
 
@@ -38,15 +42,20 @@ app.get('/', (req, res)=> {
     })
 });
 
-app.use('/api/v1/bussines', bussineRouter);
-app.use('/api/v1/roles', roleRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/roles', roleRouter);
 app.use('/api/v1/profiles', profileRouter);
-app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/unitOfMeasures', unitOfMeasuresRouter);
-app.use('/api/v1/categories', categoriesRouter);
+app.use('/api/v1/login', loginRouter)
+app.use('/api/v1/bussines', bussineRouter);
 app.use('/api/v1/products', productsRouter);
+//app.use('/api/v1/unitOfMeasures', unitOfMeasuresRouter);
+//app.use('/api/v1/categories', categoriesRouter);
 app.use('/api/v1/imgsCatalog', imgsCatalogRouter);
+app.use('/api/v1/receivings', receivingsRouter);
+app.use('/api/v1/receptions', receptionsRouter);
+app.use('/api/v1/cart', cartsRouter);
+app.use('/api/v1/purchases', ordersRouter);
+
 
 app.listen(config.api.port, () => {
     console.log(`Server started at port: ${config.api.host}`)

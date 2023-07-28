@@ -2,21 +2,21 @@ const {DataTypes} = require('sequelize')
 
 const db = require('../utils/database')
 const Products = require('./products.models')
-const Receptions = require('./receptions.models')
+const Orders = require('./orders.models')
 
-const Detail_receptions = db.define('detail_receptions', {
+const Detail_orders = db.define('detail_orders', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    receptionId: {
+    orderId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
             key: 'id',
-            model: Receptions
+            model: Orders
         }
     },
     productId: {
@@ -27,15 +27,14 @@ const Detail_receptions = db.define('detail_receptions', {
             model: Products
         }
     },
-    cost: {
-        type: DataTypes.FLOAT,
+    price: {
+        type: DataTypes.DOUBLE,
         allowNull: false
     },
     quantity: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.DOUBLE,
         allowNull: false
     }
-
 })
 
-module.exports = Detail_receptions
+module.exports = Detail_orders

@@ -1,10 +1,12 @@
-const userControllers = require('./users.controllers')
+const usersControllers = require('./users.controllers')
 //const mailer = require('../utils/mailer')
 //const config = require('../../config')
+const profilesControllers = require('../profiles/profiles.controllers')
+const rolesControllers = require('../roles/roles.controllers')
 
 
 const getAllUsers = (req, res) => {
-    userControllers.findAllUsers()
+    usersControllers.findAllUsers()
         .then((data) => {
             res.status(200).json(data)
         })
@@ -15,7 +17,7 @@ const getAllUsers = (req, res) => {
 
 const getUserById = (req, res) => {
     const id = req.params.id
-    userControllers.findUserById(id)
+    usersControllers.findUserById(id)
         .then((data) => {
             if(data){
                 res.status(200).json(data)
@@ -30,7 +32,7 @@ const getUserById = (req, res) => {
 
 const getMyUser = (req, res) => {
     const id = req.user.id 
-    userControllers.findUserById(id)
+    usersControllers.findUserById(id)
         .then((data) => {
             res.status(200).json(data)
         })
@@ -42,9 +44,13 @@ const getMyUser = (req, res) => {
 
 const postUser = (req, res) => {
     const {firstName, lastName, email, password, userName} = req.body
-    userControllers.createUser({firstName, lastName, email, password,userName})
-        .then(async (data) => {
-            res.status(201).json(data)
+    usersControllers.createUser({firstName, lastName, email, password,userName})
+    .then(async (data) => {
+        const userId = data.id
+        const defaultRole = 'client'
+        const roleId = await rolesControllers.findRoleByName(defaultRole)
+        await profilesControllers.createProfile({userId, roleId})
+        res.status(201).json(data)
         })
         .catch((err) => {
             res.status(400).json({message: err.message, fields: {
@@ -62,8 +68,8 @@ const postUser = (req, res) => {
 const patchUser = (req, res) => {
     const id = req.params.id 
     const {firstName, lastName, email, status} = req.body
-
-    userControllers.updateUser(id, {firstName, lastName, email, status})
+    
+    usersControllers.updateUser(id, {firstName, lastName, email, status})
         .then((data) =>{
             if(data){
                 res.status(200).json({message: `User edited succesfully with id: ${id}`})
@@ -79,7 +85,7 @@ const patchUser = (req, res) => {
 const patchMyUser = (req, res) => {
     const id = req.user.id
     const { firstName, lastName } = req.body
-    userControllers.updateUser(id, {firstName, lastName})
+    usersControllers.updateUser(id, {firstName, lastName})
         .then(() => {
             res.status(200).json({message: 'Your user was edited succesfully!'})
         })
@@ -91,7 +97,7 @@ const patchMyUser = (req, res) => {
 //? Solo admins pueden ejecutarlo
 const deleteUser = (req, res) => {
     const id = req.params.id 
-    userControllers.deleteUser(id)
+    usersControllers.deleteUser(id)
         .then((data) => {
             if(data){
                 res.status(204).json()
@@ -106,7 +112,7 @@ const deleteUser = (req, res) => {
 
 const deleteMyUser = (req, res) => {
     const id = req.user.id 
-    userControllers.deleteUser(id)
+    usersControllers.deleteUser(id)
         .then(() => {
             res.status(204).json()
         })

@@ -33,9 +33,22 @@ const findUserByEmail = async (email) => {
     return data
 }
 
+const findAllUserByBussineId = async (bussineId) => {
+    const data = await Users.findAll({
+        where: {
+            bussineId: bussineId
+        },
+        attributes: {
+            exclude: ['password', 'createdAt', 'updatedAt']
+        }
+    })
+    return data
+}
+
 const createUser = async (obj) => {
     const data = await Users.create({
         id: uuid.v4(),
+        bussineId: obj.bussineId,
         firstName: obj.firstName,
         lastName: obj.lastName,
         email: obj.email,
@@ -60,6 +73,7 @@ module.exports = {
     findAllUsers,
     findUserById,
     findUserByEmail,
+    findAllUserByBussineId,
     createUser,
     updateUser
 }

@@ -26,9 +26,9 @@ const getImgCatalogById = (req, res) => {
     })
 }
 
-const postImgCatalog = async (req, res) => {
-    const {productName, imgUrl} = req.body
-    const productId = await productsControllers.findProductByName(productName)
+const postImgCatalog = (req, res) => {
+    const {productId, imgUrl} = req.body
+    //const productId = await productsControllers.findProductByName(productName)
     imgsCatalogControllers.createImgCatalog({productId, imgUrl})
     .then((data) => {
         res.status(201).json(data)

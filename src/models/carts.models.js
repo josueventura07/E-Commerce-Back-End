@@ -2,7 +2,7 @@ const {DataTypes} = require('sequelize')
 
 const db = require('../utils/database')
 const Profiles = require('./profiles.models')
-
+const Products = require('./products.models')
 
 const Carts = db.define('carts' , {
     id: {
@@ -17,8 +17,16 @@ const Carts = db.define('carts' , {
             model: Profiles
         }
     },
-    amount: {
-        type: DataTypes.DOUBLE,
+    productId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            key: 'id',
+            model: Products
+        }
+    },
+    quantity: {
+        type: DataTypes.FLOAT,
         allowNull: false
     }
 })
