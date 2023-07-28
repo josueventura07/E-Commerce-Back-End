@@ -10,8 +10,6 @@ const profileRouter = require('./profiles/profiles.router')
 const loginRouter = require('./auth/auth.router')
 const bussineRouter = require('./bussines/bussines.router');
 const productsRouter = require('./products/products.router')
-//const unitOfMeasuresRouter = require('./unitOfMeasure/unitOfMeasures.router')
-//const categoriesRouter = require('./categories/categories.router')
 const imgsCatalogRouter = require('./imagesCatalog/imgsCatalog.router')
 const receivingsRouter = require('./receivings/receivings.router')
 const receptionsRouter = require('./receptions/receptions.router')
@@ -48,8 +46,6 @@ app.use('/api/v1/profiles', profileRouter);
 app.use('/api/v1/login', loginRouter)
 app.use('/api/v1/bussines', bussineRouter);
 app.use('/api/v1/products', productsRouter);
-//app.use('/api/v1/unitOfMeasures', unitOfMeasuresRouter);
-//app.use('/api/v1/categories', categoriesRouter);
 app.use('/api/v1/imgsCatalog', imgsCatalogRouter);
 app.use('/api/v1/receivings', receivingsRouter);
 app.use('/api/v1/receptions', receptionsRouter);
