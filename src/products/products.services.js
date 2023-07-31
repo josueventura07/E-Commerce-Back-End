@@ -28,6 +28,17 @@ const getAllProducts = (req, res) => {
     }
 }
 
+const getAllStocks = (req, res) => {
+    productsControllers.findAllStocks()
+    .then((data) => {
+       res.status(200).json({status: 'success', products: data})
+    })
+    .catch((err) => {
+        res.status(400).json({message: err.message})
+    })
+}
+
+
 const getProductById = (req, res) => {
     const id = req.params.id
     productsControllers.findProductById(id)
@@ -45,8 +56,6 @@ const getProductById = (req, res) => {
 
 const postProduct = async (req, res) => {
     const {productName, description, unitOfMeasureId, categoryId, price, comment} = req.body
-    //const unitOfMeasureId = await unitOfMeasuresControllers.findUnitOfMeasureByName(unitOfMeasure)
-    //const categoryId = await categoriesControllers.findCategoryByName(category)
     
     productsControllers.createProduct({productName, description, unitOfMeasureId, categoryId, price, comment})
     .then((data)=> {
@@ -66,6 +75,7 @@ const postProduct = async (req, res) => {
 
 module.exports = {
     getAllProducts,
+    getAllStocks,
     getProductById,
     postProduct
 }

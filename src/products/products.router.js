@@ -8,6 +8,9 @@ router.route('/')
 .get(productsServices.getAllProducts)
 .post(productsServices.postProduct)
 
+router.route('/stock')
+.get(productsServices.getAllStocks)
+
 router.route('/categories')
 .get(categoriesServices.getAllCategories)
 .post(categoriesServices.postCategory)

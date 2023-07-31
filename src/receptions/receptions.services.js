@@ -31,7 +31,7 @@ const postReception = async (req, res) => {
 
         .then((data) => {
             const receptionId = data.id
-          detailProducts.forEach( element => {
+            detailProducts.forEach( element => {
             if(!element.supplierName && !element.invoiceNumber) {
             
                 const productId = element.productId

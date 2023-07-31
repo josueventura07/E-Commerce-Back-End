@@ -1,8 +1,13 @@
+const sequelize = require('sequelize')
 
 const Products = require('../models/products.models')
 const UnitOfMeasures = require('../models/unit_of_measures.models')
 const Categories = require('../models/categories.models')
 const productImgs = require('../models/images_catalog.models')
+const Detail_receptions = require('../models/detail_receptions.models')
+const Detail_orders = require('../models/detail_orders.models')
+const ImgsCatalog = require('../models/images_catalog.models')
+
 
 const findAllProducts = async () => {
     const data = await Products.findAll({
@@ -27,7 +32,24 @@ const findAllProducts = async () => {
     return data
 }
 
+const findAllStocks = async () => {
+    const data = await Products.sequelize.query(
+        `select p.id, p."productName", p."description", p."categoryId", ic."imgUrl" as "imgsCatalogs", p.price, sum(dr.quantity) as received, sum(do2.quantity) as ordered, sum(dr.quantity) - sum(do2.quantity) as stock
+        from products p
+        inner join "imgsCatalogs" ic on ic."productId" = p.id
+        inner join detail_receptions dr on dr."productId" = p.id
+        inner join detail_orders do2 on do2."productId" = p.id
+        group by p.id, ic."imgUrl" 
+        order by p.id`, 
+        {type: sequelize.QueryTypes.SELECT})
+        
+    
+    return data
+
+}
+
 const findProductById = async (id) => {
+
     const data = await Products.findOne({
         where: {
             id: id
@@ -46,6 +68,22 @@ const findProductById = async (id) => {
             attributes: ['imgUrl']
         }]
     })
+    
+    
+    
+    /*Products.sequelize.query(
+        `select p.id, p."productName", p."description", ct.id as "categoryId", ct.name as "categoryName", ic."imgUrl" as "imgsCatalogs", p.price, sum(dr.quantity) as received, sum(do2.quantity) as ordered, sum(dr.quantity) - sum(do2.quantity) as stock
+        from products p
+        inner join "imgsCatalogs" ic on ic."productId" = p.id
+        inner join "categories" ct on ct.id = p."categoryId"
+        inner join detail_receptions dr on dr."productId" = p.id
+        inner join detail_orders do2 on do2."productId" = p.id
+        WHERE p.id = ${id}
+        group by p.id, ic."imgUrl", ct.id, ct.name 
+        order by p.id`, 
+        {type: sequelize.QueryTypes.SELECT})
+
+    */
 
     return data
 }
@@ -120,6 +158,7 @@ const deleteProduct = async (id) => {
 
 module.exports = {
     findAllProducts,
+    findAllStocks,
     findProductById,
     findAllProductsByCategory,
     findProductByName,
