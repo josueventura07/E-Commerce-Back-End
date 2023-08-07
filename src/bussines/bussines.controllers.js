@@ -30,7 +30,7 @@ const findBussineByName = async (name) => {
         }
     })
 
-    return data.id
+    return data
 }
 
 const findAllBussineUsers = async (bussineId) => {

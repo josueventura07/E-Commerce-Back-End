@@ -34,13 +34,17 @@ const findAllProducts = async () => {
 
 const findAllStocks = async () => {
     const data = await Products.sequelize.query(
-        `select p.id, p."productName", p."description", p."categoryId", ic."imgUrl" as "imgsCatalogs", p.price, sum(dr.quantity) as received, sum(do2.quantity) as ordered, sum(dr.quantity) - sum(do2.quantity) as stock
+        `select p.id, p."productName", p.description, p."categoryId", 
+        array[ic."imgUrl"] as "imgsCatalogs", p.price, coalesce(dr.received, 0) as received, coalesce(do2.ordered, 0) as ordered, 
+        coalesce(dr.received - do2.ordered, dr.received) as stock
         from products p
-        inner join "imgsCatalogs" ic on ic."productId" = p.id
-        inner join detail_receptions dr on dr."productId" = p.id
-        inner join detail_orders do2 on do2."productId" = p.id
-        group by p.id, ic."imgUrl" 
-        order by p.id`, 
+        left join (select "productId", sum(quantity) as received 
+                        from detail_receptions group by "productId") dr 
+                            on dr."productId" = p.id
+        left join (select "productId", sum(quantity) as ordered 
+                        from detail_orders group by "productId") do2 
+                            on do2."productId" = p.id
+        left join "imgsCatalogs" ic on ic."productId" = p.id`, 
         {type: sequelize.QueryTypes.SELECT})
         
     

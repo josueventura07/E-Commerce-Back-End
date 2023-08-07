@@ -49,6 +49,9 @@ const initModels = () => {
     Profiles.belongsToMany(Products, {through: 'carts'})
     Products.belongsToMany(Profiles, {through: 'carts'})
 
+    Carts.belongsTo(Products)
+    Products.hasMany(Carts)
+
     Users.belongsToMany(Bussines, {through: 'bussinesAdministrators'})
     Bussines.belongsToMany(Users, {through: 'bussinesAdministrators'})
 

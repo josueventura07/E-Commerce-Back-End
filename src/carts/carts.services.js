@@ -14,6 +14,17 @@ const getMyItemsCart = async (req, res) => {
     })
 }
 
+const deleteProductInCart = (req, res) => {
+    const productId = req.params.id
+    cartsControllers.delProductInCart(productId)
+    .then((data) => {
+        res.status(200).json({data})
+    })
+    .catch((err) => {
+        res.status(400).json({message: err.message})
+    })
+}
+
 const postNewItemInCart = async (req, res) => {
     const userId = req.user.id
     const {productId, quantity} = req.body
@@ -32,5 +43,6 @@ const postNewItemInCart = async (req, res) => {
 
 module.exports = {
     getMyItemsCart,
-    postNewItemInCart
+    postNewItemInCart,
+    deleteProductInCart
 }

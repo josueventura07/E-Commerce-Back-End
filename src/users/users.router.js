@@ -11,11 +11,6 @@ router.route('/')
     .get(userServices.getAllUsers)
     .post(userServices.postUser)
 
-router.route('/bussines')
-    .get(passportJWT.authenticate('jwt', {session: false}), bussinesAdministratorsServices.getAllMyBussines)
-    .post(passportJWT.authenticate('jwt', {session: false}), bussinesServices.postBussine) 
-    
-
 router.route('/me')
     .get(passportJWT.authenticate('jwt', {session: false}), userServices.getMyUser)
     .patch(passportJWT.authenticate('jwt', {session: false}), userServices.patchMyUser)

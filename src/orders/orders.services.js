@@ -1,9 +1,12 @@
 const ordersControllers = require('./orders.controllers')
 const ordersDetailsControllers = require('../orders_details/ordersDetails.controllers')
-const profilesController = require('../profiles/profiles.controllers')
+const profilesControllers = require('../profiles/profiles.controllers')
+const cartProductsControllers = require('../carts/carts.controllers') 
 
-const getAllOrders = (req, res) => {
-    ordersControllers.findAllOrders()
+const getAllOrders = async (req, res) => {
+    const userId = req.user.id
+    const profileId = await profilesControllers.findProfileIdByUserId(userId)
+    ordersControllers.findAllOrders(profileId)
     .then((data) => {
         res.status(200).json({status: 'success', purchases: data})
     })
@@ -14,31 +17,30 @@ const getAllOrders = (req, res) => {
 
 const postOrder = async (req, res) => {
     const userId = req.user.id
-    const orderInfo = req.body
-    const profileId = await profilesController.findProfileIdByUserId(userId)
-        
-    const detailProducts = orderInfo
+    const profileId = await profilesControllers.findProfileIdByUserId(userId)
+    const cartProducts = await cartProductsControllers.findMyCart(profileId) 
+    const detailProducts = cartProducts
     let amount = 0
-        orderInfo.forEach(element => {
-           if(element.price) {
-                amount = amount + element.price * element.quantity
+    cartProducts.forEach(element => {
+            if(element.dataValues.product.dataValues.price) {
+                amount = amount + element.dataValues.product.dataValues.price * element.dataValues.quantity
             }      
         });
         
-    ordersControllers.createOrder({profileId, amount})
+    await ordersControllers.createOrder({profileId, amount})
 
         .then((data) => {
             const orderId = data.id
-          detailProducts.forEach( element => {
-            if(!element.amount) {
-            
-                const productId = element.productId
-                const price = element.price
-                const quantity = element.quantity
-                ordersDetailsControllers.createProductsOrder({orderId, productId, price, quantity})
-            }
-        });
-            res.status(201).json(data)
+            detailProducts.forEach( element => {
+                                
+                    const productId = element.dataValues.product.dataValues.id
+                    const price = element.dataValues.product.dataValues.price
+                    const quantity = element.dataValues.quantity
+                    ordersDetailsControllers.createProductsOrder({orderId, productId, price, quantity})
+                
+            });
+            cartProductsControllers.cleanCart()
+            res.status(201).json({  status: 'success', data: data})
         })
         .catch((err) => {
             res.status(400).json({message: err.message})

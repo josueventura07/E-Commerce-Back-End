@@ -1,10 +1,17 @@
 const uuid = require('uuid')
 
 const Receptions = require('../models/receptions.models')
-
+const Products = require('../models/products.models')
 
 const findAllReceptions = async () => {
-    const data = await Receptions.findAll()
+    const data = await Receptions.findAll({
+        include: [
+            {
+                model: Products,
+                attributes: ['productName']
+            }
+        ]
+    })
 
     return data
 }

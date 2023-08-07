@@ -11,16 +11,16 @@ const findAllMyBussines = async (userId) => {
             userId: userId
         },
         attributes: {
-            exclude: ['userId', 'bussineId']
+            exclude: ['userId', 'bussineId', 'createdAt', 'updatedAt']
         },
         include: [
-            {
-            model: Users,
-            attributes: ['firstName', 'lastName']
-           },
            {
             model: Bussines,
-            attributes: ['bussineName']
+            attributes: ['bussineName', 'phone', 'address', 'city', 'country', 'createdAt', 'updatedAt']
+           },
+           {
+            model: Users,
+            attributes: ['firstName', 'lastName']
            }
         ]
       
