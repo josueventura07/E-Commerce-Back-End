@@ -29,7 +29,7 @@ const getAllMyOrders = async (req, res) => {
 const postOrder = async (req, res) => {
     const userId = req.user.id
     const profileId = await profilesControllers.findProfileIdByUserId(userId)
-    const cartProducts = await cartProductsControllers.findMyCart(profileId) 
+    const cartProducts = await cartProductsControllers.findAllProductsInMyCart(profileId) 
     const detailProducts = cartProducts
     let amount = 0
     cartProducts.forEach(element => {

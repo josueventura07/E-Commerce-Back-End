@@ -10,7 +10,6 @@ const Users = require('./users.models')
 const Carts = require('./carts.models')
 const Detail_orders = require('./detail_orders.models')
 const Detail_receptions = require('./detail_receptions.models')
-//const BussinesAdministrators = require('./BussinesAdministrators.models')
 const Bussines = require('./bussines.models')
 const Receivings = require('./receivings.models')
 
@@ -36,6 +35,9 @@ const initModels = () => {
 
     ImgsCatalog.belongsTo(Profiles)
     Profiles.hasMany(ImgsCatalog)
+
+    Products.belongsTo(Profiles)
+    Profiles.hasMany(Products)
 
     Products.belongsTo(UnitOfMeasures)
     UnitOfMeasures.hasMany(Products)
@@ -79,23 +81,12 @@ const initModels = () => {
     Users.belongsTo(Bussines)
     Bussines.hasMany(Users)
 
-    //Users.belongsToMany(Bussines, {through: 'bussinesAdministrators'})
-    //Bussines.belongsToMany(Users, {through: 'bussinesAdministrators'})
-
     Profiles.belongsToMany(Products, {through: 'receivings'})
     Products.belongsToMany(Profiles, {through: 'receivings'})
 
     Receivings.belongsTo(Products)
 
-    //BussinesAdministrators.belongsTo(Roles)
-    //Roles.hasMany(BussinesAdministrators)
-
-    //BussinesAdministrators.belongsTo(Users)
-    //Users.hasMany(BussinesAdministrators)
-
-    //BussinesAdministrators.belongsTo(Bussines)
-    //Bussines.hasMany(BussinesAdministrators)
-
+    
 }
 
 module.exports = initModels

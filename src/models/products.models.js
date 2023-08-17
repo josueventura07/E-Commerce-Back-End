@@ -3,7 +3,7 @@ const {DataTypes} = require('sequelize')
 const db = require('../utils/database')
 const UnitOfMeasures = require('./unit_of_measures.models')
 const Categories = require('./categories.models')
-
+const Profiles = require('./profiles.models')
 
 const Products = db.define('products' , {
     id: {
@@ -49,6 +49,14 @@ const Products = db.define('products' , {
         type: DataTypes.STRING,
         validate: {
             len: [2, 150]
+        }
+    },
+    profileId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            key: 'id',
+            model: Profiles
         }
     },
     status: {
