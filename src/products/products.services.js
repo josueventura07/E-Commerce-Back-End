@@ -73,9 +73,42 @@ const postProduct = async (req, res) => {
     })
 }
 
+const patchProduct = (req, res) => {
+    const id = req.params.id
+    const {productName, description, unitOfMeasureId, categoryId, price, comment} = req.body
+    productsControllers.updateProduct(id, {productName, description, unitOfMeasureId, categoryId, price, comment})
+    .then((data) => {
+        if(data) {
+            res.status(200).json({message: `Product with id: ${id} updated successfully`})
+        } else {
+            res.status(404).json({message: 'Invalid ID'})
+        }
+    })
+    .catch((err) => {
+        res.status(400).json({message: err.message})
+    })
+}
+
+const deleteProduct = (req, res) => {
+    const id = req.params.id
+    productsControllers.delProduct(id, {status: false})
+    .then((data) => {
+        if(data) {
+            res.status(200).json({message: `Product with id: ${id} deleted successfully`})
+        } else {
+            res.status(404).json({message: 'Invalid ID'})
+        }
+    })
+    .catch((err) => {
+        res.status(400).json({message: err.message})
+    })
+}
+
 module.exports = {
     getAllProducts,
     getAllStocks,
     getProductById,
-    postProduct
+    postProduct,
+    patchProduct,
+    deleteProduct
 }

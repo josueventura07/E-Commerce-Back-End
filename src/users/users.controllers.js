@@ -32,7 +32,7 @@ const findUserByEmail = async (email) => {
     })
     return data
 }
-
+/*
 const findAllUserByBussineId = async (bussineId) => {
     const data = await Users.findAll({
         where: {
@@ -44,7 +44,7 @@ const findAllUserByBussineId = async (bussineId) => {
     })
     return data
 }
-
+*/
 const createUser = async (obj) => {
     const data = await Users.create({
         id: uuid.v4(),
@@ -73,7 +73,6 @@ module.exports = {
     findAllUsers,
     findUserById,
     findUserByEmail,
-    findAllUserByBussineId,
     createUser,
     updateUser
 }

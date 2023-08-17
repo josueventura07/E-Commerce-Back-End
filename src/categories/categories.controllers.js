@@ -3,7 +3,11 @@
 const Categories = require('../models/categories.models') 
 
 const findAllCategories = async () => {
-    const data = await Categories.findAll()
+    const data = await Categories.findAll({
+        where: {
+            status: true
+        }
+    })
 
     return data
 }
@@ -11,7 +15,8 @@ const findAllCategories = async () => {
 const findCategoryById = async (id) => {
     const data = await Categories.findOne({
         where: {
-            id: id
+            id: id,
+            status: true
         }
     })
 
@@ -30,15 +35,38 @@ const findCategoryByName = async (name) => {
 
 const createCategory = async (obj) => {
     const data = await Categories.create({
-        name: obj.name
+        name: obj.name,
+        profileId: obj.profileId
     })
 
     return data
+}
+
+const updateCategory = async (id, obj) => {
+    const data = await Categories.update(obj, {
+        where: {
+            id: id
+        }
+    })
+
+    return data[0]
+}
+
+const delCategory = async (id) => {
+    const data = await Categories.update({
+        where: {
+            id: id
+        }
+    })
+
+    return data[0]
 }
 
 module.exports = {
     findAllCategories,
     findCategoryById,
     findCategoryByName,
-    createCategory
+    createCategory,
+    updateCategory,
+    delCategory
 }

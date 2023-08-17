@@ -1,10 +1,46 @@
-const uuid = require('uuid')
-
 const Carts = require('../models/carts.models')
 const Products = require('../models/products.models')
 const imgsCatalogs = require('../models/images_catalog.models')
+const Profiles = require('../models/profiles.models')
+const Users = require('../models/users.models')
 
-const findMyCart = async (profileId) => {
+const findAllCarts = async () => {
+    const data = await Carts.findAll({
+        attributes: {
+            exclude: ['productId', 'createdAt']
+        },
+        include: [
+            {
+                model: Profiles,
+                attributes: {
+                    exclude: ['id', 'roleId', 'status', 'createdAt', 'updatedAt']
+                },
+                include: [
+                    {
+                      model: Users,
+                      attributes: ['userName']  
+                    }
+                ]                
+            },
+            {
+                model: Products,
+                attributes: ['id','productName', 'price'],
+                include: [
+                    {
+                        model: imgsCatalogs,
+                        attributes: ['imgUrl']
+                    }
+                ]
+            }
+            
+        ]
+    })
+
+    return data
+}
+
+
+const findAllProductsInMyCart = async (profileId) => {
     const data = await Carts.findAll({
         where: {
             profileId: profileId
@@ -32,7 +68,6 @@ const findMyCart = async (profileId) => {
 
 const createItemInCart = async (obj) => {
     const data = await Carts.create({
-        id: uuid.v4(),
         profileId: obj.profileId,
         productId: obj.productId,
         quantity: obj.quantity
@@ -41,20 +76,20 @@ const createItemInCart = async (obj) => {
     return data
 }
 
-const delProductInCart = async (productId) => {
-    const data = await Carts.destroy({
+const updateProductInCart = async (id, obj) => {
+    const data = await Carts.update(obj, {
         where: {
-            productId: productId
+            id: id
         }
     })
 
     return data[0]
 }
 
-const updateCart = async (id, obj) => {
-    const data = await Carts.update(obj, {
+const delProductInCart = async (productId) => {
+    const data = await Carts.destroy({
         where: {
-            id: id
+            productId: productId
         }
     })
 
@@ -70,9 +105,10 @@ const cleanCart = async () => {
 }
 
 module.exports = {
-    findMyCart,
+    findAllCarts,
+    findAllProductsInMyCart,
     createItemInCart,
-    updateCart,
+    updateProductInCart,
     delProductInCart,
     cleanCart
 }

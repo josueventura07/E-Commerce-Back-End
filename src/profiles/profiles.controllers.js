@@ -46,6 +46,16 @@ const findProfileIdByUserId = async (userId) => {
     return data.id
 }
 
+const findRoleIdInProfileByUserId = async (userId) => {
+    const data = await Profiles.findOne({
+        where: {
+            userId: userId
+        }
+    })
+
+    return data.roleId
+}
+
 const createProfile = async(obj) => {
     const data = Profiles.create({
         id: uuid.v4(),
@@ -94,6 +104,7 @@ module.exports = {
     findAllProfiles,
     findProfileById,
     findProfileIdByUserId,
+    findRoleIdInProfileByUserId,
     createProfile,
     activeProfile,
     createBussineAdministrator,

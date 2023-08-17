@@ -25,7 +25,7 @@ const getRoleById = (req, res) => {
     })
 }
 
-const postRole = (req, res) => {
+const postRole = async (req, res) => {
     const {name} = req.body
     rolesControllers.createRole({name})
     .then((data) => {

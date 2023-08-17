@@ -6,7 +6,8 @@ const Products = require('./products.models')
 
 const Carts = db.define('carts' , {
     id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
     },
     profileId: {

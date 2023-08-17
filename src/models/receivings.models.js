@@ -6,7 +6,8 @@ const Products = require('./products.models')
 
 const Receivings = db.define('receivings', {
     id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
     },
     profileId: {
@@ -24,6 +25,10 @@ const Receivings = db.define('receivings', {
             key: 'id',
             model: Products
         }
+    },
+    cost: {
+        type: DataTypes.FLOAT,
+        allowNull: false
     },
     quantity: {
         type: DataTypes.FLOAT,

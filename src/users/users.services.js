@@ -3,7 +3,7 @@ const usersControllers = require('./users.controllers')
 //const config = require('../../config')
 const profilesControllers = require('../profiles/profiles.controllers')
 const rolesControllers = require('../roles/roles.controllers')
-
+const bussinesControllers = require('../bussines/bussines.controllers')
 
 const getAllUsers = (req, res) => {
     usersControllers.findAllUsers()
@@ -42,9 +42,11 @@ const getMyUser = (req, res) => {
 }
 
 
-const postUser = (req, res) => {
+const postUser = async (req, res) => {
     const {firstName, lastName, email, password, userName} = req.body
-    usersControllers.createUser({firstName, lastName, email, password,userName})
+    const bussineId = (await bussinesControllers.findAllBussines()).dataValues.id
+    
+    usersControllers.createUser({bussineId, firstName, lastName, email, password,userName})
     .then(async (data) => {
         const userId = data.id
         const defaultRole = 'client'

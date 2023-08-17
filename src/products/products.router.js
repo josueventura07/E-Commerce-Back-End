@@ -1,27 +1,20 @@
 const router = require('express').Router()
 
 const productsServices = require('./products.services')
-const categoriesServices = require('../categories/categories.services')
-const unitOfMeasureServices = require('../unitOfMeasure/unitOfMeasures.services')
+const passportJWT = require('../middlewares/auth.middleware')
+const roleMiddleware = require('../middlewares/role.middleware')
 
 router.route('/')
-.get(productsServices.getAllProducts)
-.post(productsServices.postProduct)
+    .get(productsServices.getAllProducts)
+    .post(passportJWT.authenticate('jwt', {session: false}), roleMiddleware, productsServices.postProduct)
 
 router.route('/stock')
-.get(productsServices.getAllStocks)
+    .get(productsServices.getAllStocks)
 
-router.route('/categories')
-.get(categoriesServices.getAllCategories)
-.post(categoriesServices.postCategory)
-
-router.route('/unitOfMeasure')
-.get(unitOfMeasureServices.getAllUnitOfMeasures)
-.post(unitOfMeasureServices.postUnitOfMeasure)
 
 router.route('/:id')
-.get(productsServices.getProductById)
-
-
+    .get(productsServices.getProductById)
+    .patch(passportJWT.authenticate('jwt', {session: false}), roleMiddleware, productsServices.patchProduct)
+    .delete(passportJWT.authenticate('jwt', {session: false}), roleMiddleware, productsServices.deleteProduct)
 
 module.exports = router

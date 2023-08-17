@@ -2,9 +2,9 @@ const bussinesControllers = require('./bussines.controllers')
 const rolesControllers = require('../roles/roles.controllers')
 const bussinesAdministratorsControllers = require('../bussinesAdministrators/bussinesAdministrators.controllers')
 const profilesControllers = require('../profiles/profiles.controllers')
-const usersBussineControllers = require('../users/users.controllers')
+const usersControllers = require('../users/users.controllers')
 
-const getAllBussines = (req, res) => {
+const getMyBussine = (req, res) => {
     bussinesControllers.findAllBussines()
     .then((data) => {
         res.status(200).json(data)
@@ -29,7 +29,7 @@ const getBussineById = (req, res) => {
     })
 }
 
-const getAllBussineUsers = (req, res) => {
+/*const getAllBussineUsers = (req, res) => {
     const bussineId = req.params.id
     usersBussineControllers.findAllUserByBussineId(bussineId)
     .then((data) => {
@@ -42,19 +42,27 @@ const getAllBussineUsers = (req, res) => {
     .catch((err) => {
         res.status(400).json({message: err.message})
     })
-}
+}*/
 
 const postBussine = (req, res) => {
-    const {bussineName, phone, address, city, country} = req.body
+    const {bussineName, phone, address, city, country, firstName, lastName, email, password, userName} = req.body
     
     bussinesControllers.createBussine({bussineName, phone, address, city, country})
     .then(async (data) => {
-        const userId = req.user.id
         const bussineId = data.id
-        const roleId = await rolesControllers.findRoleByName('admin')
-        await bussinesAdministratorsControllers.createBussineAdministrator({userId, bussineId})
-        await profilesControllers.createBussineAdministrator(userId, {roleId})
-        res.status(201).json(data)
+        await usersControllers.createUser({bussineId, firstName, lastName, email, password, userName})
+        .then(async (data) => {
+            const userId = data.id
+            const roleId = await rolesControllers.findRoleByName('admin')
+            await profilesControllers.createProfile({userId, roleId})
+            res.status(201).json(data)
+        })
+        .catch((err) => {
+            res.status(400).json({message: err.message})
+        })
+        //await bussinesAdministratorsControllers.createBussineAdministrator({userId, bussineId})
+        //await profilesControllers.createBussineAdministrator(userId, {roleId})
+        //res.status(201).json(data)
     })
     .catch((err) => {
         res.status(400).json({message: err.message, fields: {
@@ -66,7 +74,7 @@ const postBussine = (req, res) => {
 
 }
 
-const postBussineUser = (req, res) => {
+/*const postBussineUser = (req, res) => {
     const {firstName, lastName, email, password, userName} = req.body
     const bussineId = req.params.id
 
@@ -90,7 +98,7 @@ const postBussineUser = (req, res) => {
     })
 
 }
-
+*/
 const patchBussine = (req, res) => {
     const {id} = req.params.id
     const {name, phone, address} = req.body
@@ -124,11 +132,9 @@ const deleteBussine = (req, res) => {
 }
 
 module.exports = {
-    getAllBussines,
+    getMyBussine,
     getBussineById,
-    getAllBussineUsers,
     postBussine,
-    postBussineUser,
     patchBussine,
     deleteBussine
 }

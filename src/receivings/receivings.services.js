@@ -11,10 +11,10 @@ const getAllReceivings = (req, res) => {
     })
 }
 
-const getMyReceivings = async (req, res) => {
+const getAllMyReceivings = async (req, res) => {
     const userId = req.user.id
     const profileId = await profilesControllers.findProfileIdByUserId(userId)
-    receivingsControllers.findMyReceivings(profileId)
+    receivingsControllers.findAllMyReceivings(profileId)
     .then((data) => {
         res.status(200).json(data)
     })
@@ -23,11 +23,11 @@ const getMyReceivings = async (req, res) => {
     })
 }
 
-const postReceiving = async (req, res) => {
+const postNewItemInReceivings = async (req, res) => {
     const userId = req.user.id
-    const {productId, quantity} = req.body
+    const {productId, cost, quantity} = req.body
     const profileId = await profilesControllers.findProfileIdByUserId(userId)
-    receivingsControllers.createReceiving({profileId, productId, productId, quantity})
+    receivingsControllers.createItemInReceivings({profileId, productId, cost, quantity})
     .then((data) => {
         res.status(201).json(data)
     })
@@ -36,9 +36,43 @@ const postReceiving = async (req, res) => {
     })
 }
 
+const pathItemInReceivings = (req, res) => {
+    const id = req.params.id
+    const {cost, quantity} = req.body
+    receivingsControllers.updateItemInReceivings(id, {cost, quantity})
+    .then((data) => {
+        if(data) {
+            res.status(200).json({message: `item updated successfully`})
+        } else {
+            res.status(404).json({message: 'Invalid Id'})
+        }
+    })
+    .catch((err) => {
+        res.status(400).json({message: err.message})
+    })
+}
+
+const deleteItemInReceivings = (req, res) => {
+    const id = req.params.id
+    receivingsControllers.delItemInReceivings(id)
+    .then((data) => {
+        if(data) {
+            res.status(204).json({message: `Item deleted successfully`})
+        } else {
+            res.status(404).json({message: 'Invalid Id'})
+        }
+    })
+    .catch((err) => {
+        res.status(400).json({message: err.message})
+    })
+}
+
+
 
 module.exports = {
     getAllReceivings,
-    getMyReceivings,
-    postReceiving
+    getAllMyReceivings,
+    postNewItemInReceivings,
+    pathItemInReceivings,
+    deleteItemInReceivings
 }

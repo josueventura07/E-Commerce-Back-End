@@ -10,6 +10,7 @@ const Users = db.define('users' , {
     },
     bussineId: {
         type: DataTypes.UUID,
+        allowNull: false,
         references: {
             key: 'id',
             model: Bussines

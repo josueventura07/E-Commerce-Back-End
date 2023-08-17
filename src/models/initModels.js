@@ -10,7 +10,7 @@ const Users = require('./users.models')
 const Carts = require('./carts.models')
 const Detail_orders = require('./detail_orders.models')
 const Detail_receptions = require('./detail_receptions.models')
-const BussinesAdministrators = require('./BussinesAdministrators.models')
+//const BussinesAdministrators = require('./BussinesAdministrators.models')
 const Bussines = require('./bussines.models')
 const Receivings = require('./receivings.models')
 
@@ -28,11 +28,20 @@ const initModels = () => {
     Products.belongsTo(Categories)
     Categories.hasMany(Products)
 
+    Categories.belongsTo(Profiles)
+    Profiles.hasMany(Categories)
+
     ImgsCatalog.belongsTo(Products)
     Products.hasMany(ImgsCatalog)
 
+    ImgsCatalog.belongsTo(Profiles)
+    Profiles.hasMany(ImgsCatalog)
+
     Products.belongsTo(UnitOfMeasures)
     UnitOfMeasures.hasMany(Products)
+
+    UnitOfMeasures.belongsTo(Profiles)
+    Profiles.hasMany(UnitOfMeasures)
 
     Receptions.belongsTo(Profiles)
     Profiles.hasMany(Receptions)
@@ -43,8 +52,20 @@ const initModels = () => {
     Receptions.belongsToMany(Products, {through: 'detail_receptions'})
     Products.belongsToMany(Receptions, {through: 'detail_receptions'})
 
+    Detail_receptions.belongsTo(Receptions)
+    Receptions.hasMany(Detail_receptions)
+
+    Detail_receptions.belongsTo(Products)
+    Products.hasMany(Detail_receptions)
+
     Orders.belongsToMany(Products, {through: 'detail_orders'})
     Products.belongsToMany(Orders, {through: 'detail_orders'})
+
+    Detail_orders.belongsTo(Orders)
+    Orders.hasMany(Detail_orders)
+
+    Detail_orders.belongsTo(Products)
+    Products.hasMany(Detail_orders)
 
     Profiles.belongsToMany(Products, {through: 'carts'})
     Products.belongsToMany(Profiles, {through: 'carts'})
@@ -52,20 +73,28 @@ const initModels = () => {
     Carts.belongsTo(Products)
     Products.hasMany(Carts)
 
-    Users.belongsToMany(Bussines, {through: 'bussinesAdministrators'})
-    Bussines.belongsToMany(Users, {through: 'bussinesAdministrators'})
+    Carts.belongsTo(Profiles)
+    Profiles.hasMany(Carts)
+
+    Users.belongsTo(Bussines)
+    Bussines.hasMany(Users)
+
+    //Users.belongsToMany(Bussines, {through: 'bussinesAdministrators'})
+    //Bussines.belongsToMany(Users, {through: 'bussinesAdministrators'})
 
     Profiles.belongsToMany(Products, {through: 'receivings'})
     Products.belongsToMany(Profiles, {through: 'receivings'})
 
+    Receivings.belongsTo(Products)
+
     //BussinesAdministrators.belongsTo(Roles)
     //Roles.hasMany(BussinesAdministrators)
 
-    BussinesAdministrators.belongsTo(Users)
-    Users.hasMany(BussinesAdministrators)
+    //BussinesAdministrators.belongsTo(Users)
+    //Users.hasMany(BussinesAdministrators)
 
-    BussinesAdministrators.belongsTo(Bussines)
-    Bussines.hasMany(BussinesAdministrators)
+    //BussinesAdministrators.belongsTo(Bussines)
+    //Bussines.hasMany(BussinesAdministrators)
 
 }
 

@@ -3,17 +3,33 @@ const uuid = require('uuid')
 const Orders = require('../models/orders.models')
 const Products = require('../models/products.models')
 const OrdersDetails = require('../models/detail_orders.models')
+const ImgsCatalog = require('../models/images_catalog.models')
 
-
-const findAllOrders = async (profileId) => {
+const findAllOrders = async () => {
     const data = await Orders.findAll({
         where: {
-            profileId: profileId
+            status: true
         },
         include: [
             {
-                model: Products,
-                attributes: ['productName', 'price']
+                model: OrdersDetails,
+                attributes: { 
+                    exclude: ['id', 'orderId', 'productId', 'price', 'createdAt', 'updatedAt']
+                },
+                include: [
+                    {
+                        model: Products,
+                        attributes: { 
+                            exclude: ['comment', 'status', 'createdAt', 'updatedAt']
+                        },
+                        include: [
+                            {
+                                model: ImgsCatalog,
+                                attributes: ['imgUrl']
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     })
@@ -21,6 +37,38 @@ const findAllOrders = async (profileId) => {
     return data
 }
 
+const findAllMyOrders = async (profileId) => {
+    const data = await Orders.findAll({
+        where: {
+            profileId: profileId,
+            status: true
+        },
+        include: [
+            {
+                model: OrdersDetails,
+                attributes: { 
+                    exclude: ['id', 'orderId', 'productId', 'price', 'createdAt', 'updatedAt']
+                },
+                include: [
+                    {
+                        model: Products,
+                        attributes: { 
+                            exclude: ['comment', 'status', 'createdAt', 'updatedAt']
+                        },
+                        include: [
+                            {
+                                model: ImgsCatalog,
+                                attributes: ['imgUrl']
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+})
+
+    return data
+}
 
 const createOrder = async (obj) => {
     const data = await Orders.create({
@@ -34,5 +82,6 @@ const createOrder = async (obj) => {
 
 module.exports = {
     findAllOrders,
+    findAllMyOrders,
     createOrder
 }

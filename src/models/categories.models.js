@@ -1,6 +1,7 @@
 const {DataTypes} = require('sequelize')
 
 const db = require('../utils/database')
+const Profiles = require('./profiles.models')
 
 const Categories = db.define('categories' , {
     id: {
@@ -15,6 +16,18 @@ const Categories = db.define('categories' , {
         validate: {
             len: [2, 50]
         }
+    },
+    profileId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            key: 'id',
+            model: Profiles
+        }
+    },
+    status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 })
 

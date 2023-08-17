@@ -25,7 +25,7 @@ const findAllProducts = async () => {
             attributes: ['id', 'name']
         }, {
             model: productImgs,
-            attributes: ['imgUrl']
+            attributes: ['id', 'imgUrl']
         }]
     })
 
@@ -34,20 +34,21 @@ const findAllProducts = async () => {
 
 const findAllStocks = async () => {
     const data = await Products.sequelize.query(
-        `select p.id, p."productName", p.description, p."categoryId", 
-        array[ic."imgUrl"] as "imgsCatalogs", p.price, coalesce(dr.received, 0) as received, coalesce(do2.ordered, 0) as ordered, 
-        coalesce(dr.received - do2.ordered, dr.received) as stock
+        `select p.id, p."productName", p.description, p."categoryId", ic."imgUrl" as "imgsCatalogs", p.price, coalesce(dr.received) as received , coalesce(do2.ordered, 0) as ordered, coalesce(dr.received - do2.ordered, dr.received) as stock
         from products p
         left join (select "productId", sum(quantity) as received 
-                        from detail_receptions group by "productId") dr 
+                        from detail_receptions 
+                        inner join receptions r on "receptionId" = r.id group by "productId", r.status having r.status = true) dr 
                             on dr."productId" = p.id
         left join (select "productId", sum(quantity) as ordered 
-                        from detail_orders group by "productId") do2 
+                        from detail_orders 
+                        inner join orders o on "orderId" = o.id  group by "productId", o.status having o.status = true) do2 
                             on do2."productId" = p.id
-        left join "imgsCatalogs" ic on ic."productId" = p.id`, 
+        left join (select "productId", json_agg(json_build_object('id', id, 'imgUrl', "imgUrl")) as "imgUrl"
+        from "imgsCatalogs" group by "productId") ic on ic."productId" = p.id
+        order by p."productName"`, 
         {type: sequelize.QueryTypes.SELECT})
-        
-    
+          
     return data
 
 }
@@ -69,7 +70,7 @@ const findProductById = async (id) => {
             attributes: ['name']
         }, {
             model: productImgs,
-            attributes: ['imgUrl']
+            attributes: ['id', 'imgUrl']
         }]
     })
     
@@ -148,10 +149,8 @@ const updateProduct = async (id, obj) => {
     return data[0]
 }
 
-const deleteProduct = async (id) => {
-    const data = await Products.update({
-        status: false
-    }, {
+const delProduct = async (id, obj) => {
+    const data = await Products.update(obj, {
         where: {
             id: id
         }
@@ -168,5 +167,5 @@ module.exports = {
     findProductByName,
     createProduct,
     updateProduct,
-    deleteProduct
+    delProduct
 }

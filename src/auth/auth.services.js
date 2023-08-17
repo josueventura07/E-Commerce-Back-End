@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken')
 
 const authControllers = require('./auth.controllers')
 const jwtSecret = require('../../config').api.jwtSecret
-//const mailer = require('../utils/mailer')
-//const config = require('../../config')
+const mailer = require('../utils/mailer')
+const config = require('../../config')
 
 const postLogin = (req, res) => {
     const {email, password} = req.body
@@ -36,7 +36,7 @@ const postLogin = (req, res) => {
         }})
     }
 }
-/*
+
 const postRecoveryToken = (req, res) => {
 
     const { email } = req.body     
@@ -79,9 +79,9 @@ const patchPassword = (req, res) => {
             res.status(400).json({message: err.message})
         })
 }
-*/
+
 module.exports = {
     postLogin,
-    /*postRecoveryToken,
-    patchPassword*/
+    postRecoveryToken,
+    patchPassword
 }

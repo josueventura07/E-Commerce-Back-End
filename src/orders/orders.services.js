@@ -4,9 +4,20 @@ const profilesControllers = require('../profiles/profiles.controllers')
 const cartProductsControllers = require('../carts/carts.controllers') 
 
 const getAllOrders = async (req, res) => {
+    
+    ordersControllers.findAllOrders()
+    .then((data) => {
+        res.status(200).json({status: 'success', purchases: data})
+    })
+    .catch((err) => {
+        res.status(400).json({message: err.message})
+    })
+}
+
+const getAllMyOrders = async (req, res) => {
     const userId = req.user.id
     const profileId = await profilesControllers.findProfileIdByUserId(userId)
-    ordersControllers.findAllOrders(profileId)
+    ordersControllers.findAllMyOrders(profileId)
     .then((data) => {
         res.status(200).json({status: 'success', purchases: data})
     })
@@ -40,7 +51,7 @@ const postOrder = async (req, res) => {
                 
             });
             cartProductsControllers.cleanCart()
-            res.status(201).json({  status: 'success', data: data})
+            res.status(201).json({  status: 'received successfully'})
         })
         .catch((err) => {
             res.status(400).json({message: err.message})
@@ -52,5 +63,6 @@ const postOrder = async (req, res) => {
 
 module.exports = {
     getAllOrders,
+    getAllMyOrders,
     postOrder
 }

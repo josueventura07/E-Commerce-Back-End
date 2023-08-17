@@ -2,15 +2,16 @@ const uuid = require('uuid')
 
 const Bussines = require('../models/bussines.models')
 
+const validateOneBussineExist = async () => {
+    const data = await Bussines.findAll()
+
+    return data.length
+}
 
 const findAllBussines = async () => {
-    const data = await Bussines.findAll({
-        where: {
-            status: true
-        }
-    })
+    const data = await Bussines.findAll()
 
-    return data
+    return data[0]
 }
 
 const findBussineById = async (id) => {
@@ -78,6 +79,7 @@ const deleteBussine = async (id) => {
 }
 
 module.exports = {
+    validateOneBussineExist,
     findAllBussines,
     findBussineById,
     findBussineByName,

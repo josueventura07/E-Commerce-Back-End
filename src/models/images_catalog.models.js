@@ -2,6 +2,7 @@ const {DataTypes} = require('sequelize')
 
 const db = require('../utils/database')
 const Products = require('./products.models')
+const Profiles = require('./profiles.models')
 
 const ImgsCatalog = db.define('imgsCatalog' , {
     id: {
@@ -23,6 +24,18 @@ const ImgsCatalog = db.define('imgsCatalog' , {
         validate: {
             isUrl: true
         }
+    },
+    profileId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+            key: 'id',
+            model: Profiles
+        }
+    },
+    status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 })
 

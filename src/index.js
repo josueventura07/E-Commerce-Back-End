@@ -4,12 +4,15 @@ const cors = require('cors');
 const config = require('../config');
 const db = require('./utils/database');
 const initModels = require('./models/initModels');
+
 const userRouter = require('./users/users.router');
 const roleRouter = require('./roles/roles.router');
 const profileRouter = require('./profiles/profiles.router')
 const loginRouter = require('./auth/auth.router')
 const bussineRouter = require('./bussines/bussines.router');
 const productsRouter = require('./products/products.router')
+const unitOfMeasureRouter = require('./unitOfMeasure/unitOfMeasures.router')
+const categoriesRouter = require('./categories/categories.router')
 const imgsCatalogRouter = require('./imagesCatalog/imgsCatalog.router')
 const receivingsRouter = require('./receivings/receivings.router')
 const receptionsRouter = require('./receptions/receptions.router')
@@ -47,9 +50,11 @@ app.use('/api/v1/login', loginRouter)
 app.use('/api/v1/bussines', bussineRouter);
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/imgsCatalog', imgsCatalogRouter);
+app.use('/api/v1/unitOfMeasure', unitOfMeasureRouter);
+app.use('/api/v1/categories', categoriesRouter);
 app.use('/api/v1/receivings', receivingsRouter);
 app.use('/api/v1/receptions', receptionsRouter);
-app.use('/api/v1/cart', cartsRouter);
+app.use('/api/v1/carts', cartsRouter);
 app.use('/api/v1/purchases', ordersRouter);
 
 

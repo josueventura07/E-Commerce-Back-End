@@ -1,9 +1,9 @@
-const {DataTypes} = require('sequelize')
+/*const {DataTypes} = require('sequelize')
 
 const db = require('../utils/database')
 const Users = require('./users.models')
 const Bussines = require('./bussines.models')
-const Roles = require('./roles.models')
+
 
 const BussinessAdministrators = db.define('bussinesAdministrators', {
     id: {
@@ -26,15 +26,7 @@ const BussinessAdministrators = db.define('bussinesAdministrators', {
             key: 'id',
             model: Bussines
         }
-    },
-    /*roleId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            key: 'id',
-            model: Roles
-        }
-    }*/
+    }
 })
 
-module.exports = BussinessAdministrators
+module.exports = BussinessAdministrators*/
