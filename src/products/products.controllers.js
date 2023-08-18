@@ -133,7 +133,8 @@ const createProduct = async (obj) => {
         unitOfMeasureId: obj.unitOfMeasureId,
         categoryId: obj.categoryId,
         price: obj.price,
-        comment: obj.comment
+        comment: obj.comment,
+        profileId: obj.profileId
     })
 
     return data
