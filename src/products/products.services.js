@@ -1,6 +1,7 @@
 const productsControllers = require('./products.controllers')
 //const unitOfMeasuresControllers = require('../unitOfMeasure/unitOfMeasures.controllers')
 //const categoriesControllers = require('../categories/categories.controllers')
+const profilesControllers = require('../profiles/profiles.controllers')
 
 const getAllProducts = (req, res) => {
     const category = req.query.category;
@@ -55,9 +56,11 @@ const getProductById = (req, res) => {
 }
 
 const postProduct = async (req, res) => {
+    const userId = req.user.id
     const {productName, description, unitOfMeasureId, categoryId, price, comment} = req.body
-    
-    productsControllers.createProduct({productName, description, unitOfMeasureId, categoryId, price, comment})
+    const profileId = await profilesControllers.findProfileIdByUserId(userId)
+
+    productsControllers.createProduct({productName, description, unitOfMeasureId, categoryId, price, comment, profileId})
     .then((data)=> {
         res.status(201).json(data)
     })
