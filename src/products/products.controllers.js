@@ -94,7 +94,25 @@ const findProductById = async (id) => {
 }
 
 const findAllProductsByCategory = async (category) => {
-    const data = await Products.findAll({
+
+    const data = await Products.sequelize.query(
+        `select p.id, p."productName", p.description, p."categoryId", ic."imgUrl" as "imgsCatalogs", p.price, coalesce(dr.received) as received , coalesce(do2.ordered, 0) as ordered, coalesce(dr.received - do2.ordered, dr.received) as stock
+        from products p
+        left join (select "productId", sum(quantity) as received 
+                        from detail_receptions 
+                        inner join receptions r on "receptionId" = r.id group by "productId", r.status having r.status = true) dr 
+                            on dr."productId" = p.id
+        left join (select "productId", sum(quantity) as ordered 
+                        from detail_orders 
+                        inner join orders o on "orderId" = o.id  group by "productId", o.status having o.status = true) do2 
+                            on do2."productId" = p.id
+        left join (select "productId", json_agg(json_build_object('id', id, 'imgUrl', "imgUrl")) as "imgUrl"
+        from "imgsCatalogs" group by "productId") ic on ic."productId" = p.id
+        where p."categoryId" = ${category}
+        order by p."productName"`, 
+        {type: sequelize.QueryTypes.SELECT})
+
+   /* const data = await Products.findAll({
         where: {
             categoryId: category
         },
@@ -112,7 +130,7 @@ const findAllProductsByCategory = async (category) => {
             attributes: ['imgUrl']
         }]
     })
-
+*/
     return data
 }
 
